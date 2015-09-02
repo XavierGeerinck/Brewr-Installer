@@ -1,0 +1,60 @@
+{
+    "machine_ip": "172.17.8.2",
+    "synced_folder_location": "/takeoff",
+    "programs": [
+        {
+            "name":"mariadb",
+            "basepath":"mariadb/",
+            "docker_run_parameters": [
+                {
+                    "param": "-p",
+                    "value": "3306:3306",
+                    "description": "Forward port 3306 to 3306 on the localhost interface."
+                },
+                {
+                    "param": "-v",
+                    "value": "$DATA_DIR$/mariadb/:/var/lib/mysql",
+                    "description": "Synchronises the data directory in /takeoff/projects/data/mariadb to /var/lib/mysql, so we can access the mysql data"
+                },
+                {
+                    "param": "-e",
+                    "value": "MARIADB_PASS=\"root\""
+                }
+            ],
+            "auto_start":true
+        },
+        {
+            "name":"nginx",
+            "basepath":"nginx_php/",
+            "config_files": [
+                {
+                    "src":"config/site.conf",
+                    "dest":"/etc/nginx/conf.d/default.conf"
+                },
+                {
+                    "src":"config/nginx.conf",
+                    "dest":"/etc/nginx/nginx.conf"
+                }
+            ],
+            "docker_run_parameters": [
+                {
+                    "param": "-p",
+                    "value": "80:80",
+                    "description": "Forward port 80 to 80 on the localhost interface."
+                },
+                {
+                    "param": "-v",
+                    "value": "$DATA_DIR$/nginx_php/:/var/www",
+                    "description": "Synchronises the www directory in /takeoff/images/nginx_php/www to /var/www, this means that the dir site will be in there and that we can use it to store a site content. We can also add multiple sites in here."
+                }
+            ],
+            "custom_commands": [
+                {
+                    "description":"Reload nginx for the configuration to take effect.",
+                    "command":"service nginx reload"
+                }
+            ],
+            "auto_start":true
+        }
+    ]
+}

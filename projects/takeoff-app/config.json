@@ -1,0 +1,23 @@
+{
+    "machine_ip": "172.17.8.3",
+    "synced_folder_location": "/takeoff",
+    "data_folder_location": "$PROJECT_DIR$/data",
+    "programs": [
+        {
+            "name":"ubuntu-shell",
+            "container_name": "ubuntu",
+            "basepath":"ubuntu/",
+            "custom_commands": [
+                {
+                    "description":"Install python",
+                    "command": "sudo apt-get install python -y"
+                },
+                {
+                    "description":"Install io.js.",
+                    "command":"curl -sL https://deb.nodesource.com/setup_iojs_1.x | sudo bash -; sudo apt-get install -y iojs;"
+                }
+            ],
+            "auto_start":true
+        }
+    ]
+}
